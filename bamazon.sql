@@ -30,5 +30,14 @@ VALUES ("phone charger", "Technology", 12, 3);
 INSERT INTO products(product_name, department_name, price, stock_quantity)
 VALUES ("Speculoos Cookie Butter", "Food & Drink", 6, 23);
 
+INSERT INTO products(product_name, department_name, price, stock_quantity)
+VALUES ("Skippy Peanut Butter", "Food & Drink", 3, 30);
+
+INSERT INTO products(product_name, department_name, price, stock_quantity)
+VALUES ("Paper Towels", "Health and Household", 8, 14);
+
+INSERT INTO products(product_name, department_name, price, stock_quantity)
+VALUES ("Brownie Pan", "Food & Drink", 16, 2);
+
 SELECT * FROM products;
 
