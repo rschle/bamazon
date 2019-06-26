@@ -35,61 +35,63 @@ function showItems() {
 }
 
 
-function chooseItem(){
-    inquirer
-      .prompt([
-        {
-          name: "choice_Id",
-          type: "input",
-          message: "Please type the ID of the item you want.",
-        },
-        {
-          name: "num_wanted",
-          type: "input",
-          message: "How many units of this item do you want to buy?"
-        }
-      ])
-      .then(function(answers) {
-        // console.log(answers.num_wanted)
-        var query = "SELECT * FROM products WHERE ?";
-        connection.query(query, {
-          id:answers.choice_Id
-        }, function (err, res){
-
-          var inStock = res[0].stock_quantity;
-          var chosenItemNum = answers.num_wanted;
-
-          if(inStock >= chosenItem){
-            var leftover = inStock - chosenItemNum;
-            var totalSpent = res[0].price * chosenItemNum;
-
-            var chosenItem = res[0].product;
-
-            console.log(totalSpent + " = total price of items bought");
-
-            connection.query(
-              "UPDATE products SET ? WHERE ?", [
-                {
-                  stock_quantity: leftover
-                },
-                {
-                  id: answers.choice_Id
-                }
-              ],
-
-                function(error) {
-                  if(error) throw err;
-                }
-            );
-          } else {
-            console.log("Insufficient quantity!");
-            chooseItem();
-          }
-
-
-        }
-       
+function chooseItem() {
+  inquirer
+    .prompt([
+      {
+        name: "choice_Id",
+        type: "input",
+        message: "Please type the ID of the item you want.",
+      },
+      {
+        name: "num_wanted",
+        type: "input",
+        message: "How many units of this item do you want to buy?"
       }
+    ])
+    .then(function (answers) {
+      // console.log(answers.num_wanted)
+      var query = "SELECT * FROM products WHERE ?";
+      connection.query(query, {
+        id: answers.choice_Id
+      }, function (err, res) {
+
+        var inStock = res[0].stock_quantity;
+        var chosenItemNum = answers.num_wanted;
+
+        if (inStock >= chosenItem) {
+          var leftover = inStock - chosenItemNum;
+          var totalSpent = res[0].price * chosenItemNum;
+
+          var chosenItem = res[0].product;
+
+          console.log(totalSpent + " = total price of items bought");
+
+          connection.query(
+            "UPDATE products SET ? WHERE ?", [
+              {
+                stock_quantity: leftover
+              },
+              {
+                id: answers.choice_Id
+              }
+            ],
+
+            function (error) {
+              if (error) throw err;
+            }
+          );
+        } else {
+          console.log("Insufficient quantity!");
+          chooseItem();
+        }
+
+
+      })
+
+    })
+}
+
 
 
           // if(err) throw err;
@@ -104,7 +106,7 @@ function chooseItem(){
           //   }
           // }
 
-          
+
         // for(var i; i < res.length; i++){
         //   if(res[i].item_id === parseInt(answers.choice_Id)){
         //     if(res[i].stock_quantity < parseInt(answers.num_wanted)){
@@ -113,8 +115,8 @@ function chooseItem(){
         //     }
         //   }
         // }
-      
-      
+
+
 
 
 
