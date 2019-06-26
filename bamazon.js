@@ -53,19 +53,19 @@ function chooseItem() {
       // console.log(answers.num_wanted)
       var query = "SELECT * FROM products WHERE ?";
       connection.query(query, {
-        id: answers.choice_Id
-      }, function (err, res) {
-
-        var inStock = res[0].stock_quantity;
+        item_id: answers.choice_Id
+      }, function (err, result) {
+        if(err) throw err;
+        var inStock = result[0].stock_quantity;
         var chosenItemNum = answers.num_wanted;
 
-        if (inStock >= chosenItem) {
+        if (inStock >= chosenItemNum) {
           var leftover = inStock - chosenItemNum;
-          var totalSpent = res[0].price * chosenItemNum;
+          var totalSpent = result[0].price * chosenItemNum;
 
-          var chosenItem = res[0].product;
+          var chosenItem = result[0].product;
 
-          console.log(totalSpent + " = total price of items bought");
+          console.log("Your order of $" + totalSpent + " has been processed.");
 
           connection.query(
             "UPDATE products SET ? WHERE ?", [
@@ -73,14 +73,15 @@ function chooseItem() {
                 stock_quantity: leftover
               },
               {
-                id: answers.choice_Id
+                item_id: answers.choice_Id
               }
             ],
 
-            function (error) {
-              if (error) throw err;
-            }
+            // function (err) {
+            //   if (err) throw err;
+            // }
           );
+          showItems();
         } else {
           console.log("Insufficient quantity!");
           chooseItem();
